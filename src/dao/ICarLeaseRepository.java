@@ -22,4 +22,7 @@ public interface ICarLeaseRepository {
     HashMap<Integer, Lease> listLeaseHistory();
 
     boolean recordPayment(Lease lease, double amount);
+    List<Double> getPaymentHistoryForCustomer(int customerID);
+    double calculateTotalRevenue();
+    
  }
