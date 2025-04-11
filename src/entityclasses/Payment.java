@@ -6,18 +6,19 @@ public class Payment{
     private int leaseID;
     private Date paymentDate;
     private double amount;
-    
+    private int customerID;
 	public Payment() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public Payment(int paymentID, int leaseID, Date paymentDate, double amount) {
+	public Payment(int paymentID, int leaseID, Date paymentDate, double amount, int customerID) {
 		super();
 		this.paymentID = paymentID;
 		this.leaseID = leaseID;
 		this.paymentDate = paymentDate;
 		this.amount = amount;
+		this.customerID=customerID;
 	}
 
 	public int getPaymentID() {
@@ -56,6 +57,14 @@ public class Payment{
 	public String toString() {
 		return "Payment [paymentID=" + paymentID + ", leaseID=" + leaseID + ", paymentDate=" + paymentDate + ", amount="
 				+ amount + "]";
+	}
+
+	public int getCustomerID() {
+		return customerID;
+	}
+
+	public void setCustomerID(int customerID) {
+		this.customerID = customerID;
 	}
     
     
