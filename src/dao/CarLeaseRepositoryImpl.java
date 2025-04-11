@@ -8,6 +8,7 @@ import java.util.Date;
 
 public class CarLeaseRepositoryImpl implements ICarLeaseRepository {
     private Connection con;
+    private Map<Integer, List<Payment>> customerPayments = new HashMap<>();
 
     public CarLeaseRepositoryImpl() throws SQLException {
         con = DBConnUtil.getconnectiondb();
@@ -330,7 +331,39 @@ public class CarLeaseRepositoryImpl implements ICarLeaseRepository {
         }
         return recorded;
     }
+    @Override
+    public List<Double> getPaymentHistoryForCustomer(int customerID) {
+        List<Double> history = new ArrayList<>();
+        try {
+            PreparedStatement ps = con.prepareStatement("select amount from payment where leaseid in (select leaseid from lease where customerid = ?)");   
+            ps.setInt(1, customerID);
+            ResultSet rs = ps.executeQuery();
 
+            while (rs.next()) {
+                history.add(rs.getDouble("amount"));
+            }
+        } catch (SQLException e) {
+            System.out.println("Error retrieving payment history for customer.");
+            e.printStackTrace();
+        }
+        return history;
+    }
+
+    @Override
+    public double calculateTotalRevenue() {
+        double total = 0;
+        try {
+            PreparedStatement ps = con.prepareStatement("SELECT SUM(amount) AS total FROM payment");
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                total = rs.getDouble("total");
+            }
+        } catch (SQLException e) {
+            System.out.println("Unable to calculate total revenue");
+            e.printStackTrace();
+        }
+        return total;
+    }
     public void close() {
         try {
             if (con != null && !con.isClosed()) {
@@ -341,5 +374,8 @@ public class CarLeaseRepositoryImpl implements ICarLeaseRepository {
             e.printStackTrace();
         }
     }
+
+	
+	
 
 }
