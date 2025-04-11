@@ -39,6 +39,8 @@ public class MainModule {
                 System.out.println("12. List Active Leases");
                 System.out.println("13. List Lease History");
                 System.out.println("14. Record Payment");
+                System.out.println("15. Payment History of Customer");
+                System.out.println("16. Total Revenue");
                 System.out.println("15. Exit");
                 System.out.print("Enter your choice: ");
 
@@ -243,11 +245,30 @@ public class MainModule {
                                 System.out.println("Lease not found.");
                             }
                             break;
+                        
+                        case 15:
+                            System.out.print("Enter Customer ID to view payment history: ");
+                            int customerIdForHistory = sc.nextInt();
+                            List<Double> history = repo.getPaymentHistoryForCustomer(customerIdForHistory);
+                            
+                            if (history.isEmpty()) {
+                                System.out.println("No payment history found for this customer.");
+                            } else {
+                                System.out.println("Payment History:");
+                                for (double amountPaid : history) {
+                                    System.out.println("Amount: ₹" + amountPaid);
+                                }
+                            }
+                            break;
+                            
+                        case 16:
+                            double totalRevenue = repo.calculateTotalRevenue();
+                            System.out.println("Total Revenue from all payments is: " + totalRevenue);
+                            break;
 
-                        case 15: 
+                        case 17: 
                             System.out.println("Thank you. Visit again!");
-                
-
+                            
                         default:
                             System.out.println("Invalid choice. Try again with a valid choice");
                     }
